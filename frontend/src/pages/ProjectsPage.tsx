@@ -16,7 +16,7 @@ export default function ProjectsPage() {
     api
       .listProjects()
       .then((data) => {
-        setProjects(data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)));
+        setProjects(data);
         setLoadError(null);
       })
       .catch((err) => setLoadError(err.message || "Failed to load projects."))

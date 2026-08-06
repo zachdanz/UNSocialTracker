@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { config } from "./config";
-import { ensureRegistryStructure } from "./registry";
+import { verifyMasterSheetAccess } from "./registry";
 import { postsRouter } from "./routes/posts";
 import { projectsRouter } from "./routes/projects";
 import { refreshAllRouter } from "./routes/refreshAll";
@@ -27,10 +27,10 @@ app.get(/^(?!\/api\/).*/, (_req, res) => {
 
 async function start(): Promise<void> {
   try {
-    await ensureRegistryStructure();
-    console.log("Project registry sheet verified.");
+    await verifyMasterSheetAccess();
+    console.log("Google Sheet access verified.");
   } catch (err: any) {
-    console.error("Warning: could not verify/initialize the registry Google Sheet on startup:", err.message);
+    console.error("Warning: could not verify access to the Google Sheet on startup:", err.message);
     console.error("The server will still start, but API calls to the sheet will fail until this is fixed.");
   }
 

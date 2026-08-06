@@ -1,4 +1,5 @@
 import { Router, Request } from "express";
+import { config } from "../config";
 import { detectPlatform, isValidUrl } from "../platforms";
 import { LANGUAGES, LanguageCode } from "../languages";
 import { appendPost, getPostByRow, listPosts, updatePostRow, PostInput } from "../sheets";
@@ -57,7 +58,7 @@ function parseInput(body: any): { input?: PostInput; error?: string } {
 
 postsRouter.get("/", async (req: Request<ProjectParams>, res) => {
   try {
-    const posts = await listPosts(req.params.projectId);
+    const posts = await listPosts(config.google.sheetId(), req.params.projectId);
     res.json(posts);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to read posts." });
@@ -71,7 +72,7 @@ postsRouter.post("/", async (req: Request<ProjectParams>, res) => {
     return;
   }
   try {
-    const post = await appendPost(req.params.projectId, input);
+    const post = await appendPost(config.google.sheetId(), req.params.projectId, input);
     res.status(201).json(post);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to save post." });
@@ -90,7 +91,7 @@ postsRouter.put("/:row", async (req: Request<ProjectRowParams>, res) => {
     return;
   }
   try {
-    const post = await updatePostRow(req.params.projectId, rowNumber, input);
+    const post = await updatePostRow(config.google.sheetId(), req.params.projectId, rowNumber, input);
     res.json(post);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to update post." });
@@ -105,7 +106,8 @@ postsRouter.post("/:row/refresh", async (req: Request<ProjectRowParams>, res) =>
   }
   try {
     const projectId = req.params.projectId;
-    const post = await getPostByRow(projectId, rowNumber);
+    const spreadsheetId = config.google.sheetId();
+    const post = await getPostByRow(spreadsheetId, projectId, rowNumber);
     if (!post) {
       res.status(404).json({ error: "Post not found." });
       return;
@@ -120,7 +122,7 @@ postsRouter.post("/:row/refresh", async (req: Request<ProjectRowParams>, res) =>
       return;
     }
     const stats = await fetcher.fetchStats(post.link);
-    const updated = await updatePostRow(projectId, rowNumber, {
+    const updated = await updatePostRow(spreadsheetId, projectId, rowNumber, {
       date: post.date,
       platform: post.platform,
       link: post.link,

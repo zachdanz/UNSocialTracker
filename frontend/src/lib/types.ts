@@ -44,5 +44,4 @@ export interface Project {
   id: string;
   name: string;
   sheetUrl: string;
-  createdAt: string;
 }

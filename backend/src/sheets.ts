@@ -30,8 +30,9 @@ export interface PostInput {
   language: LanguageCode;
 }
 
-export const POSTS_SHEET = "Posts";
-export const TOTALS_SHEET = "TOTALS";
+export const POSTS_SUFFIX = " — Posts";
+export const TOTALS_SUFFIX = " — TOTALS";
+
 const POSTS_HEADERS = [
   "Date",
   "Platform",
@@ -46,6 +47,19 @@ const POSTS_HEADERS = [
   "Last Updated",
 ];
 
+export function postsTabName(projectId: string): string {
+  return `${projectId}${POSTS_SUFFIX}`;
+}
+
+export function totalsTabName(projectId: string): string {
+  return `${projectId}${TOTALS_SUFFIX}`;
+}
+
+/** Wrap a sheet/tab name for use inside an A1 range or formula (handles spaces/special chars). */
+function q(tabName: string): string {
+  return `'${tabName.replace(/'/g, "''")}'`;
+}
+
 let sheetsClient: sheets_v4.Sheets | null = null;
 
 export function getSheetsClient(): sheets_v4.Sheets {
@@ -53,10 +67,7 @@ export function getSheetsClient(): sheets_v4.Sheets {
   const auth = new google.auth.JWT({
     email: config.google.serviceAccountEmail(),
     key: config.google.privateKey(),
-    scopes: [
-      "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive.file",
-    ],
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
   sheetsClient = google.sheets({ version: "v4", auth });
   return sheetsClient;
@@ -99,40 +110,68 @@ function postToRow(post: PostInput, lastUpdated: string): (string | number)[] {
   ];
 }
 
-export async function ensureSheetStructure(spreadsheetId: string): Promise<void> {
+/**
+ * Creates the "<project> — Posts" / "<project> — TOTALS" tabs inside the single
+ * shared spreadsheet, if they don't already exist. Returns the new tabs' sheetIds
+ * (Google's internal numeric tab id, used for deep-linking to a tab).
+ */
+export async function ensureProjectTabs(
+  spreadsheetId: string,
+  projectId: string
+): Promise<{ postsSheetId: number | null; totalsSheetId: number | null }> {
   const sheets = getSheetsClient();
+  const postsTab = postsTabName(projectId);
+  const totalsTab = totalsTabName(projectId);
+
   const meta = await sheets.spreadsheets.get({ spreadsheetId });
-  const existingTitles = new Set((meta.data.sheets || []).map((s) => s.properties?.title));
+  const existing = meta.data.sheets || [];
+  const findId = (title: string) => existing.find((s) => s.properties?.title === title)?.properties?.sheetId ?? null;
 
   const addRequests: sheets_v4.Schema$Request[] = [];
-  if (!existingTitles.has(POSTS_SHEET)) {
-    addRequests.push({ addSheet: { properties: { title: POSTS_SHEET } } });
+  if (findId(postsTab) === null) {
+    addRequests.push({ addSheet: { properties: { title: postsTab } } });
   }
-  if (!existingTitles.has(TOTALS_SHEET)) {
-    addRequests.push({ addSheet: { properties: { title: TOTALS_SHEET } } });
+  if (findId(totalsTab) === null) {
+    addRequests.push({ addSheet: { properties: { title: totalsTab } } });
   }
+
+  let addedSheets: sheets_v4.Schema$Sheet[] = [];
   if (addRequests.length > 0) {
-    await sheets.spreadsheets.batchUpdate({
+    const batchRes = await sheets.spreadsheets.batchUpdate({
       spreadsheetId,
       requestBody: { requests: addRequests },
     });
+    addedSheets = (batchRes.data.replies || [])
+      .map((r) => r.addSheet)
+      .filter((s): s is sheets_v4.Schema$Sheet => Boolean(s));
   }
 
-  if (!existingTitles.has(POSTS_SHEET)) {
+  const postsSheetId = findId(postsTab) ?? addedSheets.find((s) => s.properties?.title === postsTab)?.properties?.sheetId ?? null;
+  const totalsSheetId =
+    findId(totalsTab) ?? addedSheets.find((s) => s.properties?.title === totalsTab)?.properties?.sheetId ?? null;
+
+  if (findId(postsTab) === null) {
     await sheets.spreadsheets.values.update({
       spreadsheetId,
-      range: `${POSTS_SHEET}!A1:K1`,
+      range: `${q(postsTab)}!A1:K1`,
       valueInputOption: "RAW",
       requestBody: { values: [POSTS_HEADERS] },
     });
   }
 
-  if (!existingTitles.has(TOTALS_SHEET)) {
-    await initTotalsSheet(sheets, spreadsheetId);
+  if (findId(totalsTab) === null) {
+    await initTotalsSheet(sheets, spreadsheetId, postsTab, totalsTab);
   }
+
+  return { postsSheetId, totalsSheetId };
 }
 
-async function initTotalsSheet(sheets: sheets_v4.Sheets, spreadsheetId: string): Promise<void> {
+async function initTotalsSheet(
+  sheets: sheets_v4.Sheets,
+  spreadsheetId: string,
+  postsTab: string,
+  totalsTab: string
+): Promise<void> {
   const headerRow = [
     "",
     "NUMBER POSTS",
@@ -144,17 +183,19 @@ async function initTotalsSheet(sheets: sheets_v4.Sheets, spreadsheetId: string):
     "TOTAL VIEWS",
   ];
 
+  const p = q(postsTab);
+
   const languageRows = TOTALS_ROW_ORDER.slice(0, 10).map((code, i) => {
     const r = i + 2;
     return [
       code,
-      `=COUNTIF(${POSTS_SHEET}!$J:$J,$A${r})`,
-      `=SUMIF(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$E:$E)`,
-      `=SUMIF(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$F:$F)`,
-      `=SUMIF(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$G:$G)`,
-      `=SUMIF(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$H:$H)`,
-      `=COUNTIFS(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$D:$D,"yes")`,
-      `=SUMIF(${POSTS_SHEET}!$J:$J,$A${r},${POSTS_SHEET}!$I:$I)`,
+      `=COUNTIF(${p}!$J:$J,$A${r})`,
+      `=SUMIF(${p}!$J:$J,$A${r},${p}!$E:$E)`,
+      `=SUMIF(${p}!$J:$J,$A${r},${p}!$F:$F)`,
+      `=SUMIF(${p}!$J:$J,$A${r},${p}!$G:$G)`,
+      `=SUMIF(${p}!$J:$J,$A${r},${p}!$H:$H)`,
+      `=COUNTIFS(${p}!$J:$J,$A${r},${p}!$D:$D,"yes")`,
+      `=SUMIF(${p}!$J:$J,$A${r},${p}!$I:$I)`,
     ];
   });
 
@@ -171,17 +212,17 @@ async function initTotalsSheet(sheets: sheets_v4.Sheets, spreadsheetId: string):
 
   await sheets.spreadsheets.values.update({
     spreadsheetId,
-    range: `${TOTALS_SHEET}!A1:H12`,
+    range: `${q(totalsTab)}!A1:H12`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [headerRow, ...languageRows, totalRow] },
   });
 }
 
-export async function listPosts(spreadsheetId: string): Promise<Post[]> {
+export async function listPosts(spreadsheetId: string, projectId: string): Promise<Post[]> {
   const sheets = getSheetsClient();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range: `${POSTS_SHEET}!A2:K`,
+    range: `${q(postsTabName(projectId))}!A2:K`,
   });
   const rows = res.data.values || [];
   return rows
@@ -189,14 +230,14 @@ export async function listPosts(spreadsheetId: string): Promise<Post[]> {
     .filter((p): p is Post => p !== null);
 }
 
-export async function appendPost(spreadsheetId: string, post: PostInput): Promise<Post> {
+export async function appendPost(spreadsheetId: string, projectId: string, post: PostInput): Promise<Post> {
   const sheets = getSheetsClient();
   const lastUpdated = new Date().toISOString();
   const values = [postToRow(post, lastUpdated)];
 
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId,
-    range: `${POSTS_SHEET}!A:K`,
+    range: `${q(postsTabName(projectId))}!A:K`,
     valueInputOption: "USER_ENTERED",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values },
@@ -211,6 +252,7 @@ export async function appendPost(spreadsheetId: string, post: PostInput): Promis
 
 export async function updatePostRow(
   spreadsheetId: string,
+  projectId: string,
   rowNumber: number,
   post: PostInput
 ): Promise<Post> {
@@ -220,7 +262,7 @@ export async function updatePostRow(
 
   await sheets.spreadsheets.values.update({
     spreadsheetId,
-    range: `${POSTS_SHEET}!A${rowNumber}:K${rowNumber}`,
+    range: `${q(postsTabName(projectId))}!A${rowNumber}:K${rowNumber}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values },
   });
@@ -228,11 +270,15 @@ export async function updatePostRow(
   return rowToPost(values[0].map(String), rowNumber);
 }
 
-export async function getPostByRow(spreadsheetId: string, rowNumber: number): Promise<Post | null> {
+export async function getPostByRow(
+  spreadsheetId: string,
+  projectId: string,
+  rowNumber: number
+): Promise<Post | null> {
   const sheets = getSheetsClient();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range: `${POSTS_SHEET}!A${rowNumber}:K${rowNumber}`,
+    range: `${q(postsTabName(projectId))}!A${rowNumber}:K${rowNumber}`,
   });
   const row = (res.data.values || [])[0];
   if (!row || !row[2]) return null;

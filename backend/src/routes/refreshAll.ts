@@ -17,6 +17,7 @@ refreshAllRouter.post("/", async (req, res) => {
   }
 
   try {
+    const spreadsheetId = config.google.sheetId();
     const projects = await listProjects();
     const results: {
       project: string;
@@ -28,7 +29,7 @@ refreshAllRouter.post("/", async (req, res) => {
     let totalPosts = 0;
 
     for (const project of projects) {
-      const posts = await listPosts(project.id);
+      const posts = await listPosts(spreadsheetId, project.id);
       totalPosts += posts.length;
 
       for (const post of posts) {
@@ -39,7 +40,7 @@ refreshAllRouter.post("/", async (req, res) => {
         }
         try {
           const stats = await fetcher.fetchStats(post.link);
-          await updatePostRow(project.id, post.rowNumber, {
+          await updatePostRow(spreadsheetId, project.id, post.rowNumber, {
             date: post.date,
             platform: post.platform,
             link: post.link,
