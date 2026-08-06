@@ -1,0 +1,16 @@
+name: Daily stats refresh
+
+on:
+  schedule:
+    # 06:00 UTC every day
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /api/refresh-all
+        run: |
+          curl -sf -X POST "${{ secrets.APP_URL }}/api/refresh-all" \
+            -H "X-Refresh-Secret: ${{ secrets.REFRESH_CRON_SECRET }}"

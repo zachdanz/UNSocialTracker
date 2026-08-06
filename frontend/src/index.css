@@ -1,0 +1,197 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f5f7;
+  color: #1a1a1a;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #555;
+  margin-top: 0;
+  max-width: 720px;
+}
+
+.post-form {
+  background: #fff;
+  border: 1px solid #dcdfe4;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin: 20px 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.field input,
+.field select {
+  padding: 8px 10px;
+  border: 1px solid #cbd0d8;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.field-link {
+  position: relative;
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin-top: auto;
+  margin-bottom: 8px;
+}
+
+.platform-badge {
+  align-self: flex-start;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: #1e7b34;
+  width: fit-content;
+}
+
+.platform-badge.unknown {
+  background: #fbe8e6;
+  color: #b3261e;
+}
+
+.form-error {
+  color: #b3261e;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.form-hint {
+  color: #777;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+button {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.secondary {
+  background: #eee;
+  color: #333;
+}
+
+.table-section {
+  background: #fff;
+  border: 1px solid #dcdfe4;
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toolbar-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+th,
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ececec;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+td input[type="number"] {
+  width: 70px;
+  padding: 4px 6px;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.row-message {
+  font-size: 0.78rem;
+  color: #b3261e;
+  max-width: 220px;
+  white-space: normal;
+}
+
+.empty-state {
+  color: #777;
+}
