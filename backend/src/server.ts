@@ -2,9 +2,11 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { config } from "./config";
-import { verifyMasterSheetAccess } from "./registry";
+import { migrate } from "./db";
 import { postsRouter } from "./routes/posts";
 import { projectsRouter } from "./routes/projects";
+import { totalsRouter } from "./routes/totals";
+import { exportRouter } from "./routes/export";
 import { refreshAllRouter } from "./routes/refreshAll";
 import { platformsRouter } from "./routes/platforms";
 
@@ -13,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/projects/:projectId/posts", postsRouter);
+app.use("/api/projects/:projectId/totals", totalsRouter);
+app.use("/api/projects/:projectId/export.xlsx", exportRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/refresh-all", refreshAllRouter);
 app.use("/api/platforms", platformsRouter);
@@ -27,11 +31,11 @@ app.get(/^(?!\/api\/).*/, (_req, res) => {
 
 async function start(): Promise<void> {
   try {
-    await verifyMasterSheetAccess();
-    console.log("Google Sheet access verified.");
+    await migrate();
+    console.log("Database schema verified.");
   } catch (err: any) {
-    console.error("Warning: could not verify access to the Google Sheet on startup:", err.message);
-    console.error("The server will still start, but API calls to the sheet will fail until this is fixed.");
+    console.error("Warning: could not connect to / migrate the database on startup:", err.message);
+    console.error("The server will still start, but API calls will fail until this is fixed.");
   }
 
   app.listen(config.port, () => {

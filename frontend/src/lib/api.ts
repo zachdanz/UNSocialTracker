@@ -1,4 +1,4 @@
-import { PlatformCapability, Post, LanguageOption, Project } from "./types";
+import { PlatformCapability, Post, LanguageOption, Project, TotalsRow } from "./types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
@@ -23,6 +23,10 @@ export interface PostPayload {
   totalVideoViews: number | null;
 }
 
+export function exportUrl(projectId: string): string {
+  return `/api/projects/${projectId}/export.xlsx`;
+}
+
 export const api = {
   listProjects: () => request<Project[]>("/api/projects"),
   createProject: (name: string) =>
@@ -34,16 +38,18 @@ export const api = {
       method: "POST",
       body: JSON.stringify(payload),
     }),
-  updatePost: (projectId: string, row: number, payload: PostPayload) =>
-    request<Post>(`/api/projects/${projectId}/posts/${row}`, {
+  updatePost: (projectId: string, postId: number, payload: PostPayload) =>
+    request<Post>(`/api/projects/${projectId}/posts/${postId}`, {
       method: "PUT",
       body: JSON.stringify(payload),
     }),
-  refreshPost: (projectId: string, row: number) =>
+  refreshPost: (projectId: string, postId: number) =>
     request<{ autoFetchSupported: boolean; message?: string; post: Post }>(
-      `/api/projects/${projectId}/posts/${row}/refresh`,
+      `/api/projects/${projectId}/posts/${postId}/refresh`,
       { method: "POST" }
     ),
+
+  getTotals: (projectId: string) => request<TotalsRow[]>(`/api/projects/${projectId}/totals`),
 
   getPlatforms: () =>
     request<{ platforms: PlatformCapability[]; languages: LanguageOption[] }>("/api/platforms"),

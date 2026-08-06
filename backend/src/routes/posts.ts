@@ -1,14 +1,13 @@
 import { Router, Request } from "express";
-import { config } from "../config";
 import { detectPlatform, isValidUrl } from "../platforms";
 import { LANGUAGES, LanguageCode } from "../languages";
-import { appendPost, getPostByRow, listPosts, updatePostRow, PostInput } from "../sheets";
+import { appendPost, getPost, listPosts, updatePost, PostInput } from "../posts";
 import { getFetcher } from "../fetchers";
 
 export const postsRouter = Router({ mergeParams: true });
 
 type ProjectParams = { projectId: string };
-type ProjectRowParams = { projectId: string; row: string };
+type ProjectPostParams = { projectId: string; postId: string };
 
 function isLanguage(value: unknown): value is LanguageCode {
   return typeof value === "string" && (LANGUAGES as readonly string[]).includes(value);
@@ -58,7 +57,7 @@ function parseInput(body: any): { input?: PostInput; error?: string } {
 
 postsRouter.get("/", async (req: Request<ProjectParams>, res) => {
   try {
-    const posts = await listPosts(config.google.sheetId(), req.params.projectId);
+    const posts = await listPosts(Number(req.params.projectId));
     res.json(posts);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to read posts." });
@@ -72,17 +71,17 @@ postsRouter.post("/", async (req: Request<ProjectParams>, res) => {
     return;
   }
   try {
-    const post = await appendPost(config.google.sheetId(), req.params.projectId, input);
+    const post = await appendPost(Number(req.params.projectId), input);
     res.status(201).json(post);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to save post." });
   }
 });
 
-postsRouter.put("/:row", async (req: Request<ProjectRowParams>, res) => {
-  const rowNumber = Number(req.params.row);
-  if (!Number.isInteger(rowNumber) || rowNumber < 2) {
-    res.status(400).json({ error: "Invalid row number." });
+postsRouter.put("/:postId", async (req: Request<ProjectPostParams>, res) => {
+  const postId = Number(req.params.postId);
+  if (!Number.isInteger(postId)) {
+    res.status(400).json({ error: "Invalid post id." });
     return;
   }
   const { input, error } = parseInput(req.body || {});
@@ -91,23 +90,26 @@ postsRouter.put("/:row", async (req: Request<ProjectRowParams>, res) => {
     return;
   }
   try {
-    const post = await updatePostRow(config.google.sheetId(), req.params.projectId, rowNumber, input);
+    const post = await updatePost(Number(req.params.projectId), postId, input);
+    if (!post) {
+      res.status(404).json({ error: "Post not found." });
+      return;
+    }
     res.json(post);
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to update post." });
   }
 });
 
-postsRouter.post("/:row/refresh", async (req: Request<ProjectRowParams>, res) => {
-  const rowNumber = Number(req.params.row);
-  if (!Number.isInteger(rowNumber) || rowNumber < 2) {
-    res.status(400).json({ error: "Invalid row number." });
+postsRouter.post("/:postId/refresh", async (req: Request<ProjectPostParams>, res) => {
+  const postId = Number(req.params.postId);
+  if (!Number.isInteger(postId)) {
+    res.status(400).json({ error: "Invalid post id." });
     return;
   }
   try {
-    const projectId = req.params.projectId;
-    const spreadsheetId = config.google.sheetId();
-    const post = await getPostByRow(spreadsheetId, projectId, rowNumber);
+    const projectId = Number(req.params.projectId);
+    const post = await getPost(projectId, postId);
     if (!post) {
       res.status(404).json({ error: "Post not found." });
       return;
@@ -122,7 +124,7 @@ postsRouter.post("/:row/refresh", async (req: Request<ProjectRowParams>, res) =>
       return;
     }
     const stats = await fetcher.fetchStats(post.link);
-    const updated = await updatePostRow(spreadsheetId, projectId, rowNumber, {
+    const updated = await updatePost(projectId, postId, {
       date: post.date,
       platform: post.platform,
       link: post.link,

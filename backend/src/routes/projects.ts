@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProject, listProjects } from "../registry";
+import { createProject, listProjects } from "../projects";
 
 export const projectsRouter = Router();
 
@@ -18,14 +18,11 @@ projectsRouter.post("/", async (req, res) => {
     res.status(400).json({ error: "A project name is required." });
     return;
   }
-  if (name.length > 100) {
-    res.status(400).json({ error: "Project name is too long (max 100 characters)." });
-    return;
-  }
   try {
     const project = await createProject(name);
     res.status(201).json(project);
   } catch (err: any) {
-    res.status(500).json({ error: err.message || "Failed to create project." });
+    const status = err.message?.includes("already exists") ? 409 : 500;
+    res.status(status).json({ error: err.message || "Failed to create project." });
   }
 });

@@ -2,13 +2,15 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { PostForm } from "../components/PostForm";
 import { PostsTable } from "../components/PostsTable";
-import { api, PostPayload } from "../lib/api";
-import { Post, PlatformCapability, LanguageOption, Project } from "../lib/types";
+import { TotalsTable } from "../components/TotalsTable";
+import { api, exportUrl, PostPayload } from "../lib/api";
+import { Post, PlatformCapability, LanguageOption, Project, TotalsRow } from "../lib/types";
 
 export default function ProjectPage() {
   const { projectId } = useParams<{ projectId: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [totals, setTotals] = useState<TotalsRow[]>([]);
   const [capabilities, setCapabilities] = useState<PlatformCapability[]>([]);
   const [languages, setLanguages] = useState<LanguageOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,8 +21,12 @@ export default function ProjectPage() {
   const loadPosts = useCallback(async () => {
     if (!projectId) return;
     try {
-      const data = await api.listPosts(projectId);
-      setPosts(data.sort((a, b) => b.rowNumber - a.rowNumber));
+      const [postsData, totalsData] = await Promise.all([
+        api.listPosts(projectId),
+        api.getTotals(projectId),
+      ]);
+      setPosts(postsData);
+      setTotals(totalsData);
       setLoadError(null);
     } catch (err: any) {
       setLoadError(err.message || "Failed to load posts.");
@@ -42,7 +48,7 @@ export default function ProjectPage() {
           .catch(() => {}),
         api
           .listProjects()
-          .then((projects) => setProject(projects.find((p) => p.id === projectId) || null))
+          .then((projects) => setProject(projects.find((p) => String(p.id) === projectId) || null))
           .catch(() => {}),
       ]);
       setLoading(false);
@@ -61,7 +67,7 @@ export default function ProjectPage() {
     try {
       for (const post of posts) {
         try {
-          await api.refreshPost(projectId, post.rowNumber);
+          await api.refreshPost(projectId, post.id);
         } catch {
           // individual failures surface per-row on next load; keep going
         }
@@ -86,15 +92,10 @@ export default function ProjectPage() {
         </Link>
         <h1>{project ? project.name : "Loading project…"}</h1>
         <p className="subtitle">
-          Paste a post link to start tracking it. Data is stored in the project's Google Sheet
-          {project && (
-            <>
-              {" — "}
-              <a href={project.sheetUrl} target="_blank" rel="noreferrer">
-                open it directly ↗
-              </a>
-            </>
-          )}
+          Paste a post link to start tracking it, or{" "}
+          <a href={exportUrl(projectId)} download>
+            download this project as Excel ⬇
+          </a>
           .
         </p>
       </header>
@@ -125,6 +126,13 @@ export default function ProjectPage() {
           <PostsTable posts={filteredPosts} capabilities={capabilities} onChange={loadPosts} projectId={projectId} />
         )}
       </section>
+
+      {!loading && !loadError && posts.length > 0 && (
+        <section className="table-section">
+          <h2>Totals by language</h2>
+          <TotalsTable rows={totals} />
+        </section>
+      )}
     </div>
   );
 }

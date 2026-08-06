@@ -30,16 +30,16 @@ function formatTimestamp(iso: string): string {
 }
 
 export function PostsTable({ posts, capabilities, onChange, projectId }: Props) {
-  const [editingRow, setEditingRow] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [edit, setEdit] = useState<EditState | null>(null);
-  const [busyRow, setBusyRow] = useState<number | null>(null);
-  const [rowMessage, setRowMessage] = useState<Record<number, string>>({});
+  const [busyId, setBusyId] = useState<number | null>(null);
+  const [postMessage, setPostMessage] = useState<Record<number, string>>({});
 
   const supportsAuto = (platform: string) =>
     capabilities.find((c) => c.platform === platform)?.supportsAutoFetch ?? false;
 
   function startEdit(post: Post) {
-    setEditingRow(post.rowNumber);
+    setEditingId(post.id);
     setEdit({
       likes: String(post.likes),
       comments: String(post.comments),
@@ -51,9 +51,9 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
 
   async function saveEdit(post: Post) {
     if (!edit) return;
-    setBusyRow(post.rowNumber);
+    setBusyId(post.id);
     try {
-      await api.updatePost(projectId, post.rowNumber, {
+      await api.updatePost(projectId, post.id, {
         link: post.link,
         date: post.date,
         language: post.language,
@@ -63,34 +63,34 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
         shares: Number(edit.shares) || 0,
         totalVideoViews: edit.isVideo ? Number(edit.totalVideoViews) || 0 : null,
       });
-      setEditingRow(null);
+      setEditingId(null);
       setEdit(null);
       onChange();
     } catch (err: any) {
-      setRowMessage((m) => ({ ...m, [post.rowNumber]: err.message || "Failed to save." }));
+      setPostMessage((m) => ({ ...m, [post.id]: err.message || "Failed to save." }));
     } finally {
-      setBusyRow(null);
+      setBusyId(null);
     }
   }
 
   async function refresh(post: Post) {
-    setBusyRow(post.rowNumber);
-    setRowMessage((m) => ({ ...m, [post.rowNumber]: "" }));
+    setBusyId(post.id);
+    setPostMessage((m) => ({ ...m, [post.id]: "" }));
     try {
-      const result = await api.refreshPost(projectId, post.rowNumber);
+      const result = await api.refreshPost(projectId, post.id);
       if (!result.autoFetchSupported) {
-        setRowMessage((m) => ({
+        setPostMessage((m) => ({
           ...m,
-          [post.rowNumber]: result.message || "Automatic refresh not available — update manually.",
+          [post.id]: result.message || "Automatic refresh not available — update manually.",
         }));
         startEdit(post);
       } else {
         onChange();
       }
     } catch (err: any) {
-      setRowMessage((m) => ({ ...m, [post.rowNumber]: err.message || "Refresh failed." }));
+      setPostMessage((m) => ({ ...m, [post.id]: err.message || "Refresh failed." }));
     } finally {
-      setBusyRow(null);
+      setBusyId(null);
     }
   }
 
@@ -119,10 +119,10 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
         </thead>
         <tbody>
           {posts.map((post) => {
-            const isEditing = editingRow === post.rowNumber;
-            const busy = busyRow === post.rowNumber;
+            const isEditing = editingId === post.id;
+            const busy = busyId === post.id;
             return (
-              <tr key={post.rowNumber}>
+              <tr key={post.id}>
                 <td>{formatDate(post.date)}</td>
                 <td>{post.platform}</td>
                 <td className="link-cell">
@@ -204,7 +204,7 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                         disabled={busy}
                         className="secondary"
                         onClick={() => {
-                          setEditingRow(null);
+                          setEditingId(null);
                           setEdit(null);
                         }}
                       >
@@ -229,8 +229,8 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                       </button>
                     </>
                   )}
-                  {rowMessage[post.rowNumber] && (
-                    <div className="row-message">{rowMessage[post.rowNumber]}</div>
+                  {postMessage[post.id] && (
+                    <div className="row-message">{postMessage[post.id]}</div>
                   )}
                 </td>
               </tr>

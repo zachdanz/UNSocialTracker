@@ -12,11 +12,6 @@ function required(name: string): string {
 
 export const config = {
   port: Number(process.env.PORT) || 3000,
-  google: {
-    serviceAccountEmail: () => required("GOOGLE_SERVICE_ACCOUNT_EMAIL"),
-    // Render/most hosts store multi-line keys with literal "\n" - convert back to real newlines.
-    privateKey: () => required("GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY").replace(/\\n/g, "\n"),
-    sheetId: () => required("GOOGLE_SHEET_ID"),
-  },
+  databaseUrl: () => required("DATABASE_URL"),
   refreshCronSecret: process.env.REFRESH_CRON_SECRET || "",
 };

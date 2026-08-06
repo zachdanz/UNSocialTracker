@@ -46,8 +46,7 @@ export default function ProjectsPage() {
       <header>
         <h1>UN Social Media Campaign Tracker</h1>
         <p className="subtitle">
-          Choose a project to view or add posts to, or start a new one. Each project gets its own
-          Google Sheet.
+          Choose a project to view or add posts to, or start a new one.
         </p>
       </header>
 
@@ -68,9 +67,7 @@ export default function ProjectsPage() {
         <button type="submit" disabled={creating}>
           {creating ? "Creating…" : "+ New project"}
         </button>
-        <p className="form-hint">
-          Creating a project sets up a brand-new Google Sheet for it automatically — no setup needed.
-        </p>
+        <p className="form-hint">Project names must be unique.</p>
       </form>
 
       <section className="table-section">
@@ -87,9 +84,6 @@ export default function ProjectsPage() {
                 <Link className="project-link" to={`/projects/${project.id}`}>
                   {project.name}
                 </Link>
-                <a className="sheet-link" href={project.sheetUrl} target="_blank" rel="noreferrer">
-                  open sheet ↗
-                </a>
               </li>
             ))}
           </ul>

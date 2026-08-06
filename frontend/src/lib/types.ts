@@ -21,7 +21,7 @@ export interface LanguageOption {
 }
 
 export interface Post {
-  rowNumber: number;
+  id: number;
   date: string;
   platform: Platform;
   link: string;
@@ -41,7 +41,18 @@ export interface PlatformCapability {
 }
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
-  sheetUrl: string;
+  createdAt: string;
+}
+
+export interface TotalsRow {
+  language: string;
+  numberPosts: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  totalEngagements: number;
+  numberOfVideos: number;
+  totalViews: number;
 }

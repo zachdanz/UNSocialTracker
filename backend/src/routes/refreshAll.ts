@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { config } from "../config";
-import { listPosts, updatePostRow } from "../sheets";
-import { listProjects } from "../registry";
+import { listPosts, updatePost } from "../posts";
+import { listProjects } from "../projects";
 import { getFetcher } from "../fetchers";
 
 export const refreshAllRouter = Router();
@@ -17,11 +17,10 @@ refreshAllRouter.post("/", async (req, res) => {
   }
 
   try {
-    const spreadsheetId = config.google.sheetId();
     const projects = await listProjects();
     const results: {
       project: string;
-      row: number;
+      postId: number;
       platform: string;
       status: string;
       message?: string;
@@ -29,18 +28,18 @@ refreshAllRouter.post("/", async (req, res) => {
     let totalPosts = 0;
 
     for (const project of projects) {
-      const posts = await listPosts(spreadsheetId, project.id);
+      const posts = await listPosts(project.id);
       totalPosts += posts.length;
 
       for (const post of posts) {
         const fetcher = getFetcher(post.platform);
         if (!fetcher.supportsAutoFetch()) {
-          results.push({ project: project.name, row: post.rowNumber, platform: post.platform, status: "skipped" });
+          results.push({ project: project.name, postId: post.id, platform: post.platform, status: "skipped" });
           continue;
         }
         try {
           const stats = await fetcher.fetchStats(post.link);
-          await updatePostRow(spreadsheetId, project.id, post.rowNumber, {
+          await updatePost(project.id, post.id, {
             date: post.date,
             platform: post.platform,
             link: post.link,
@@ -51,11 +50,11 @@ refreshAllRouter.post("/", async (req, res) => {
             totalVideoViews: stats.videoViews ?? post.totalVideoViews,
             language: post.language,
           });
-          results.push({ project: project.name, row: post.rowNumber, platform: post.platform, status: "updated" });
+          results.push({ project: project.name, postId: post.id, platform: post.platform, status: "updated" });
         } catch (err: any) {
           results.push({
             project: project.name,
-            row: post.rowNumber,
+            postId: post.id,
             platform: post.platform,
             status: "error",
             message: err.message,
