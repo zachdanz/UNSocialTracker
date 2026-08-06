@@ -241,7 +241,99 @@ td input[type="number"] {
   text-decoration: underline;
 }
 
-.sheet-link {
-  font-size: 0.82rem;
-  color: #1a73e8;
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-stats {
+  font-size: 0.78rem;
+  color: #777;
+}
+
+.project-rename-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 1;
+}
+
+.project-rename-row input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #cbd0d8;
+  border-radius: 6px;
+}
+
+.project-rename-row button {
+  padding: 6px 12px;
+}
+
+.project-menu {
+  position: relative;
+}
+
+.menu-toggle {
+  background: transparent;
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+}
+
+.project-list-item:hover .menu-toggle,
+.project-list-item:focus-within .menu-toggle,
+.menu-toggle:focus {
+  opacity: 1;
+}
+
+.menu-toggle:hover {
+  background: #f0f0f0;
+}
+
+.project-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #dcdfe4;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 130px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.project-dropdown button {
+  background: transparent;
+  color: #1a1a1a;
+  border-radius: 0;
+  text-align: left;
+  padding: 8px 14px;
+  align-self: stretch;
+}
+
+.project-dropdown button:hover {
+  background: #f4f5f7;
+}
+
+.project-dropdown button.danger {
+  color: #b3261e;
+}
+
+/* Hide native number input spinners — these fields are meant to start blank and be typed in directly. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

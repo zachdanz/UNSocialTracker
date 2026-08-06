@@ -41,10 +41,10 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
   function startEdit(post: Post) {
     setEditingId(post.id);
     setEdit({
-      likes: String(post.likes),
-      comments: String(post.comments),
-      shares: String(post.shares),
-      totalVideoViews: String(post.totalVideoViews ?? 0),
+      likes: post.likes === 0 ? "" : String(post.likes),
+      comments: post.comments === 0 ? "" : String(post.comments),
+      shares: post.shares === 0 ? "" : String(post.shares),
+      totalVideoViews: !post.totalVideoViews ? "" : String(post.totalVideoViews),
       isVideo: post.isVideo,
     });
   }
@@ -148,6 +148,7 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                     <input
                       type="number"
                       min={0}
+                      placeholder="0"
                       value={edit!.likes}
                       onChange={(e) => setEdit((s) => (s ? { ...s, likes: e.target.value } : s))}
                     />
@@ -160,6 +161,7 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                     <input
                       type="number"
                       min={0}
+                      placeholder="0"
                       value={edit!.comments}
                       onChange={(e) => setEdit((s) => (s ? { ...s, comments: e.target.value } : s))}
                     />
@@ -172,6 +174,7 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                     <input
                       type="number"
                       min={0}
+                      placeholder="0"
                       value={edit!.shares}
                       onChange={(e) => setEdit((s) => (s ? { ...s, shares: e.target.value } : s))}
                     />
@@ -185,6 +188,7 @@ export function PostsTable({ posts, capabilities, onChange, projectId }: Props) 
                     <input
                       type="number"
                       min={0}
+                      placeholder="0"
                       value={edit!.totalVideoViews}
                       onChange={(e) => setEdit((s) => (s ? { ...s, totalVideoViews: e.target.value } : s))}
                     />

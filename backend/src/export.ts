@@ -27,6 +27,29 @@ const TOTALS_HEADERS = [
   "TOTAL VIEWS",
 ];
 
+const WHITE = { argb: "FFFFFFFF" };
+const RED = { argb: "FFFF0000" };
+
+/** Applies a white(low)->red(high) color scale to a single column, independent of any other column. */
+function addColumnColorScale(
+  sheet: ExcelJS.Worksheet,
+  colLetter: string,
+  firstRow: number,
+  lastRow: number
+): void {
+  if (lastRow < firstRow) return;
+  sheet.addConditionalFormatting({
+    ref: `${colLetter}${firstRow}:${colLetter}${lastRow}`,
+    rules: [
+      {
+        type: "colorScale",
+        cfvo: [{ type: "min" }, { type: "max" }],
+        color: [WHITE, RED],
+      } as ExcelJS.ColorScaleRuleType,
+    ],
+  });
+}
+
 export async function buildWorkbook(projectId: number): Promise<Buffer> {
   const [posts, totals] = await Promise.all([listPosts(projectId), getTotals(projectId)]);
 
@@ -53,6 +76,10 @@ export async function buildWorkbook(projectId: number): Promise<Buffer> {
   postsSheet.columns.forEach((col) => {
     col.width = 18;
   });
+  const postsLastRow = posts.length + 1;
+  for (const col of ["E", "F", "G", "H", "I"]) {
+    addColumnColorScale(postsSheet, col, 2, postsLastRow);
+  }
 
   const totalsSheet = workbook.addWorksheet("TOTALS");
   totalsSheet.addRow(TOTALS_HEADERS);
@@ -72,6 +99,10 @@ export async function buildWorkbook(projectId: number): Promise<Buffer> {
   totalsSheet.columns.forEach((col) => {
     col.width = 18;
   });
+  const totalsLastRow = totals.length + 1;
+  for (const col of ["B", "C", "D", "E", "F", "G", "H"]) {
+    addColumnColorScale(totalsSheet, col, 2, totalsLastRow);
+  }
 
   const buffer = await workbook.xlsx.writeBuffer();
   return Buffer.from(buffer);

@@ -15,10 +15,10 @@ export function PostForm({ languages, onSubmit }: Props) {
   const [date, setDate] = useState(todayIso());
   const [language, setLanguage] = useState("");
   const [isVideo, setIsVideo] = useState(false);
-  const [likes, setLikes] = useState("0");
-  const [comments, setComments] = useState("0");
-  const [shares, setShares] = useState("0");
-  const [videoViews, setVideoViews] = useState("0");
+  const [likes, setLikes] = useState("");
+  const [comments, setComments] = useState("");
+  const [shares, setShares] = useState("");
+  const [videoViews, setVideoViews] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,10 +59,10 @@ export function PostForm({ languages, onSubmit }: Props) {
       setDate(todayIso());
       setLanguage("");
       setIsVideo(false);
-      setLikes("0");
-      setComments("0");
-      setShares("0");
-      setVideoViews("0");
+      setLikes("");
+      setComments("");
+      setShares("");
+      setVideoViews("");
     } catch (err: any) {
       setError(err.message || "Failed to add post.");
     } finally {
@@ -125,7 +125,7 @@ export function PostForm({ languages, onSubmit }: Props) {
       <div className="field-row">
         <div className="field">
           <label htmlFor="likes">Likes / reactions</label>
-          <input id="likes" type="number" min={0} value={likes} onChange={(e) => setLikes(e.target.value)} />
+          <input id="likes" type="number" min={0} placeholder="0" value={likes} onChange={(e) => setLikes(e.target.value)} />
         </div>
         <div className="field">
           <label htmlFor="comments">Comments</label>
@@ -133,13 +133,14 @@ export function PostForm({ languages, onSubmit }: Props) {
             id="comments"
             type="number"
             min={0}
+            placeholder="0"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
           />
         </div>
         <div className="field">
           <label htmlFor="shares">Shares / reposts</label>
-          <input id="shares" type="number" min={0} value={shares} onChange={(e) => setShares(e.target.value)} />
+          <input id="shares" type="number" min={0} placeholder="0" value={shares} onChange={(e) => setShares(e.target.value)} />
         </div>
         {isVideo && (
           <div className="field">
@@ -148,6 +149,7 @@ export function PostForm({ languages, onSubmit }: Props) {
               id="videoViews"
               type="number"
               min={0}
+              placeholder="0"
               value={videoViews}
               onChange={(e) => setVideoViews(e.target.value)}
             />

@@ -44,6 +44,8 @@ export interface Project {
   id: number;
   name: string;
   createdAt: string;
+  postCount: number;
+  totalEngagement: number;
 }
 
 export interface TotalsRow {

@@ -31,6 +31,12 @@ export const api = {
   listProjects: () => request<Project[]>("/api/projects"),
   createProject: (name: string) =>
     request<Project>("/api/projects", { method: "POST", body: JSON.stringify({ name }) }),
+  renameProject: (projectId: number, name: string) =>
+    request<Project>(`/api/projects/${projectId}`, { method: "PATCH", body: JSON.stringify({ name }) }),
+  duplicateProject: (projectId: number) =>
+    request<Project>(`/api/projects/${projectId}/duplicate`, { method: "POST" }),
+  deleteProject: (projectId: number) =>
+    request<void>(`/api/projects/${projectId}`, { method: "DELETE" }),
 
   listPosts: (projectId: string) => request<Post[]>(`/api/projects/${projectId}/posts`),
   createPost: (projectId: string, payload: PostPayload) =>
