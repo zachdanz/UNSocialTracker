@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { config } from "../config";
 import { listPosts, updatePostRow } from "../sheets";
+import { listProjects } from "../registry";
 import { getFetcher } from "../fetchers";
 
 export const refreshAllRouter = Router();
@@ -16,40 +17,53 @@ refreshAllRouter.post("/", async (req, res) => {
   }
 
   try {
-    const posts = await listPosts();
-    const results: { row: number; platform: string; status: string; message?: string }[] = [];
+    const projects = await listProjects();
+    const results: {
+      project: string;
+      row: number;
+      platform: string;
+      status: string;
+      message?: string;
+    }[] = [];
+    let totalPosts = 0;
 
-    for (const post of posts) {
-      const fetcher = getFetcher(post.platform);
-      if (!fetcher.supportsAutoFetch()) {
-        results.push({ row: post.rowNumber, platform: post.platform, status: "skipped" });
-        continue;
-      }
-      try {
-        const stats = await fetcher.fetchStats(post.link);
-        await updatePostRow(post.rowNumber, {
-          date: post.date,
-          platform: post.platform,
-          link: post.link,
-          isVideo: stats.isVideo ?? post.isVideo,
-          likes: stats.likes ?? post.likes,
-          comments: stats.comments ?? post.comments,
-          shares: stats.shares ?? post.shares,
-          totalVideoViews: stats.videoViews ?? post.totalVideoViews,
-          language: post.language,
-        });
-        results.push({ row: post.rowNumber, platform: post.platform, status: "updated" });
-      } catch (err: any) {
-        results.push({
-          row: post.rowNumber,
-          platform: post.platform,
-          status: "error",
-          message: err.message,
-        });
+    for (const project of projects) {
+      const posts = await listPosts(project.id);
+      totalPosts += posts.length;
+
+      for (const post of posts) {
+        const fetcher = getFetcher(post.platform);
+        if (!fetcher.supportsAutoFetch()) {
+          results.push({ project: project.name, row: post.rowNumber, platform: post.platform, status: "skipped" });
+          continue;
+        }
+        try {
+          const stats = await fetcher.fetchStats(post.link);
+          await updatePostRow(project.id, post.rowNumber, {
+            date: post.date,
+            platform: post.platform,
+            link: post.link,
+            isVideo: stats.isVideo ?? post.isVideo,
+            likes: stats.likes ?? post.likes,
+            comments: stats.comments ?? post.comments,
+            shares: stats.shares ?? post.shares,
+            totalVideoViews: stats.videoViews ?? post.totalVideoViews,
+            language: post.language,
+          });
+          results.push({ project: project.name, row: post.rowNumber, platform: post.platform, status: "updated" });
+        } catch (err: any) {
+          results.push({
+            project: project.name,
+            row: post.rowNumber,
+            platform: post.platform,
+            status: "error",
+            message: err.message,
+          });
+        }
       }
     }
 
-    res.json({ total: posts.length, results });
+    res.json({ totalProjects: projects.length, totalPosts, results });
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Failed to refresh posts." });
   }

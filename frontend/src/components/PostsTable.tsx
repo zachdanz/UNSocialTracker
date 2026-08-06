@@ -6,6 +6,7 @@ interface Props {
   posts: Post[];
   capabilities: PlatformCapability[];
   onChange: () => void;
+  projectId: string;
 }
 
 interface EditState {
@@ -28,7 +29,7 @@ function formatTimestamp(iso: string): string {
   return d.toLocaleString();
 }
 
-export function PostsTable({ posts, capabilities, onChange }: Props) {
+export function PostsTable({ posts, capabilities, onChange, projectId }: Props) {
   const [editingRow, setEditingRow] = useState<number | null>(null);
   const [edit, setEdit] = useState<EditState | null>(null);
   const [busyRow, setBusyRow] = useState<number | null>(null);
@@ -52,7 +53,7 @@ export function PostsTable({ posts, capabilities, onChange }: Props) {
     if (!edit) return;
     setBusyRow(post.rowNumber);
     try {
-      await api.updatePost(post.rowNumber, {
+      await api.updatePost(projectId, post.rowNumber, {
         link: post.link,
         date: post.date,
         language: post.language,
@@ -76,7 +77,7 @@ export function PostsTable({ posts, capabilities, onChange }: Props) {
     setBusyRow(post.rowNumber);
     setRowMessage((m) => ({ ...m, [post.rowNumber]: "" }));
     try {
-      const result = await api.refreshPost(post.rowNumber);
+      const result = await api.refreshPost(projectId, post.rowNumber);
       if (!result.autoFetchSupported) {
         setRowMessage((m) => ({
           ...m,

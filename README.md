@@ -1,13 +1,15 @@
 # UN Social Media Campaign Tracker
 
-A shared web tool for tracking UN social media campaign posts. Paste a post link, the app records it, and everyone on the team can view/edit the same data from their browser. All data is stored in a Google Sheet, so it's also viewable/editable directly in Google Sheets at any time.
+A shared web tool for tracking UN social media campaign posts, organized by **project** (campaign). Paste a post link into a project, the app records it, and everyone on the team can view/edit the same data from their browser. Each project's data lives in its own Google Sheet, so it's also viewable/editable directly in Google Sheets at any time.
 
 This guide assumes no prior technical setup. It walks through everything needed to get the app live and shared with your team. Expect **15–20 minutes** for first-time setup; you only do this once.
 
 ## What you'll end up with
 
 - A live web address (e.g. `https://unsocialtracker.onrender.com`) that anyone on your team can open in a browser and use — no installation, no login required.
-- A Google Sheet that the app writes to, with a `Posts` tab (one row per tracked post) and a `TOTALS` tab (auto-calculated summary by language).
+- A landing page where anyone can create a new project (campaign) by typing a name, or open an existing one.
+- Each project automatically gets its **own Google Sheet**, created by the app itself, with a `Posts` tab (one row per tracked post) and a `TOTALS` tab (auto-calculated summary by language). You don't create these by hand — the app provisions a new Sheet every time someone clicks "+ New project."
+- One additional Google Sheet you create once up front (see Step 1) — this is just a small **index/registry** of projects, not where posts live.
 
 ## How it currently handles stats
 
@@ -15,25 +17,25 @@ This guide assumes no prior technical setup. It walks through everything needed 
 
 ---
 
-## Step 1 — Create the Google Sheet
+## Step 1 — Create the master Google Sheet (project registry)
 
-1. Go to [sheets.google.com](https://sheets.google.com) and create a new blank spreadsheet. Name it whatever you like, e.g. "UN Social Media Tracker".
+1. Go to [sheets.google.com](https://sheets.google.com) and create a new blank spreadsheet. Name it whatever you like, e.g. "UN Social Media Tracker — Projects".
 2. Look at the address bar. The URL looks like:
    `https://docs.google.com/spreadsheets/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/edit`
    Copy the long ID part between `/d/` and `/edit` — you'll need it in Step 3. This is your `GOOGLE_SHEET_ID`.
-3. Leave the sheet otherwise empty — the app will automatically create the `Posts` and `TOTALS` tabs with the right columns and formulas the first time it runs.
+3. Leave the sheet otherwise empty — the app will automatically add a `Projects` tab listing every project it creates. This Sheet is just an index; the actual posts for each project live in their own separate Sheets, created automatically when someone adds a new project in the app.
 
-## Step 2 — Create a Google service account (lets the app write to the sheet)
+## Step 2 — Create a Google service account (lets the app create and write to sheets)
 
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/) and create a new project (top-left project dropdown → "New Project"). Any name is fine.
-2. In the search bar, search for **"Google Sheets API"** and click **Enable**.
+2. In the search bar, search for **"Google Sheets API"** and click **Enable**. Then search for **"Google Drive API"** and click **Enable** on that too — the app needs this to create a new Sheet for each project and make it openable via link.
 3. In the left sidebar, go to **APIs & Services → Credentials**.
 4. Click **Create Credentials → Service account**. Give it any name (e.g. "tracker-bot") and click through the defaults to **Done**.
 5. Click on the service account you just created, go to the **Keys** tab, click **Add Key → Create new key → JSON**, and download the file. Keep it safe — treat it like a password.
 6. Open that downloaded JSON file in a text editor. You need two values from it:
    - `client_email` — this is your `GOOGLE_SERVICE_ACCOUNT_EMAIL`
    - `private_key` — this is your `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` (a long block starting with `-----BEGIN PRIVATE KEY-----`)
-7. Go back to your Google Sheet from Step 1, click **Share**, and paste in the `client_email` address, giving it **Editor** access. This is what allows the app to write to the sheet.
+7. Go back to your Google Sheet from Step 1, click **Share**, and paste in the `client_email` address, giving it **Editor** access. This is what allows the app to write to it. (You only need to do this once, for the master sheet — project sheets are shared automatically by the app when it creates them.)
 
 ## Step 3 — Deploy the app to Render (free hosting)
 
@@ -66,11 +68,12 @@ Just send them the Render URL from Step 3. No accounts or installs needed — an
 
 ## Using the app
 
-- **Add a post:** paste a link at the top. The platform is detected automatically from the link. Pick the language, mark whether it's a video, and enter starting stats (or leave at 0 and fill in later).
+- **Landing page:** shows every project so far, with a "+ New project" box at the top. Type a name and it creates a brand-new Google Sheet for that project automatically, then takes you straight into it.
+- **Inside a project:** paste a link at the top. The platform is detected automatically from the link. Pick the language, mark whether it's a video, and enter starting stats (or leave at 0 and fill in later).
 - **Refresh:** click "Refresh" on a row to re-check its stats. Since no platform has automatic fetching configured yet, this currently prompts you to re-enter the numbers by hand — same as clicking "Edit."
 - **Edit:** click "Edit" on any row to correct its numbers directly.
 - **Filter:** use the language dropdown above the table to narrow the view.
-- **View the raw spreadsheet:** open the Google Sheet directly any time (from Step 1) to see the same data, plus the `TOTALS` tab, which auto-calculates totals per language using live spreadsheet formulas.
+- **View the raw spreadsheet:** each project page has an "open it directly ↗" link to its own Google Sheet, which includes the `TOTALS` tab — auto-calculated totals per language using live spreadsheet formulas. The master sheet from Step 1 just lists all projects and links to each one's Sheet.
 
 ## Supported platforms
 

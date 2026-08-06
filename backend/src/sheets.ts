@@ -30,8 +30,8 @@ export interface PostInput {
   language: LanguageCode;
 }
 
-const POSTS_SHEET = "Posts";
-const TOTALS_SHEET = "TOTALS";
+export const POSTS_SHEET = "Posts";
+export const TOTALS_SHEET = "TOTALS";
 const POSTS_HEADERS = [
   "Date",
   "Platform",
@@ -46,17 +46,20 @@ const POSTS_HEADERS = [
   "Last Updated",
 ];
 
-let client: sheets_v4.Sheets | null = null;
+let sheetsClient: sheets_v4.Sheets | null = null;
 
-function getClient(): sheets_v4.Sheets {
-  if (client) return client;
+export function getSheetsClient(): sheets_v4.Sheets {
+  if (sheetsClient) return sheetsClient;
   const auth = new google.auth.JWT({
     email: config.google.serviceAccountEmail(),
     key: config.google.privateKey(),
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    scopes: [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive.file",
+    ],
   });
-  client = google.sheets({ version: "v4", auth });
-  return client;
+  sheetsClient = google.sheets({ version: "v4", auth });
+  return sheetsClient;
 }
 
 function rowToPost(row: string[], rowNumber: number): Post {
@@ -96,9 +99,8 @@ function postToRow(post: PostInput, lastUpdated: string): (string | number)[] {
   ];
 }
 
-export async function ensureSheetStructure(): Promise<void> {
-  const sheets = getClient();
-  const spreadsheetId = config.google.sheetId();
+export async function ensureSheetStructure(spreadsheetId: string): Promise<void> {
+  const sheets = getSheetsClient();
   const meta = await sheets.spreadsheets.get({ spreadsheetId });
   const existingTitles = new Set((meta.data.sheets || []).map((s) => s.properties?.title));
 
@@ -175,9 +177,8 @@ async function initTotalsSheet(sheets: sheets_v4.Sheets, spreadsheetId: string):
   });
 }
 
-export async function listPosts(): Promise<Post[]> {
-  const sheets = getClient();
-  const spreadsheetId = config.google.sheetId();
+export async function listPosts(spreadsheetId: string): Promise<Post[]> {
+  const sheets = getSheetsClient();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId,
     range: `${POSTS_SHEET}!A2:K`,
@@ -188,9 +189,8 @@ export async function listPosts(): Promise<Post[]> {
     .filter((p): p is Post => p !== null);
 }
 
-export async function appendPost(post: PostInput): Promise<Post> {
-  const sheets = getClient();
-  const spreadsheetId = config.google.sheetId();
+export async function appendPost(spreadsheetId: string, post: PostInput): Promise<Post> {
+  const sheets = getSheetsClient();
   const lastUpdated = new Date().toISOString();
   const values = [postToRow(post, lastUpdated)];
 
@@ -209,9 +209,12 @@ export async function appendPost(post: PostInput): Promise<Post> {
   return rowToPost(values[0].map(String), rowNumber);
 }
 
-export async function updatePostRow(rowNumber: number, post: PostInput): Promise<Post> {
-  const sheets = getClient();
-  const spreadsheetId = config.google.sheetId();
+export async function updatePostRow(
+  spreadsheetId: string,
+  rowNumber: number,
+  post: PostInput
+): Promise<Post> {
+  const sheets = getSheetsClient();
   const lastUpdated = new Date().toISOString();
   const values = [postToRow(post, lastUpdated)];
 
@@ -225,9 +228,8 @@ export async function updatePostRow(rowNumber: number, post: PostInput): Promise
   return rowToPost(values[0].map(String), rowNumber);
 }
 
-export async function getPostByRow(rowNumber: number): Promise<Post | null> {
-  const sheets = getClient();
-  const spreadsheetId = config.google.sheetId();
+export async function getPostByRow(spreadsheetId: string, rowNumber: number): Promise<Post | null> {
+  const sheets = getSheetsClient();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId,
     range: `${POSTS_SHEET}!A${rowNumber}:K${rowNumber}`,

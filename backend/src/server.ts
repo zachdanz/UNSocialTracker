@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { config } from "./config";
-import { ensureSheetStructure } from "./sheets";
+import { ensureRegistryStructure } from "./registry";
 import { postsRouter } from "./routes/posts";
+import { projectsRouter } from "./routes/projects";
 import { refreshAllRouter } from "./routes/refreshAll";
 import { platformsRouter } from "./routes/platforms";
 
@@ -11,7 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/posts", postsRouter);
+app.use("/api/projects/:projectId/posts", postsRouter);
+app.use("/api/projects", projectsRouter);
 app.use("/api/refresh-all", refreshAllRouter);
 app.use("/api/platforms", platformsRouter);
 
@@ -25,10 +27,10 @@ app.get(/^(?!\/api\/).*/, (_req, res) => {
 
 async function start(): Promise<void> {
   try {
-    await ensureSheetStructure();
-    console.log("Google Sheet structure verified.");
+    await ensureRegistryStructure();
+    console.log("Project registry sheet verified.");
   } catch (err: any) {
-    console.error("Warning: could not verify/initialize the Google Sheet on startup:", err.message);
+    console.error("Warning: could not verify/initialize the registry Google Sheet on startup:", err.message);
     console.error("The server will still start, but API calls to the sheet will fail until this is fixed.");
   }
 

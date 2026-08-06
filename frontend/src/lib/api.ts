@@ -1,4 +1,4 @@
-import { PlatformCapability, Post, LanguageOption } from "./types";
+import { PlatformCapability, Post, LanguageOption, Project } from "./types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
@@ -24,16 +24,27 @@ export interface PostPayload {
 }
 
 export const api = {
-  listPosts: () => request<Post[]>("/api/posts"),
-  createPost: (payload: PostPayload) =>
-    request<Post>("/api/posts", { method: "POST", body: JSON.stringify(payload) }),
-  updatePost: (row: number, payload: PostPayload) =>
-    request<Post>(`/api/posts/${row}`, { method: "PUT", body: JSON.stringify(payload) }),
-  refreshPost: (row: number) =>
+  listProjects: () => request<Project[]>("/api/projects"),
+  createProject: (name: string) =>
+    request<Project>("/api/projects", { method: "POST", body: JSON.stringify({ name }) }),
+
+  listPosts: (projectId: string) => request<Post[]>(`/api/projects/${projectId}/posts`),
+  createPost: (projectId: string, payload: PostPayload) =>
+    request<Post>(`/api/projects/${projectId}/posts`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  updatePost: (projectId: string, row: number, payload: PostPayload) =>
+    request<Post>(`/api/projects/${projectId}/posts/${row}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+  refreshPost: (projectId: string, row: number) =>
     request<{ autoFetchSupported: boolean; message?: string; post: Post }>(
-      `/api/posts/${row}/refresh`,
+      `/api/projects/${projectId}/posts/${row}/refresh`,
       { method: "POST" }
     ),
+
   getPlatforms: () =>
     request<{ platforms: PlatformCapability[]; languages: LanguageOption[] }>("/api/platforms"),
 };
