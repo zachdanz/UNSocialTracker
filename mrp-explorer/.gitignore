@@ -2,3 +2,5 @@
 # (Everything the explorer needs from it is in data/posts.json and dist/, without WhatsApp numbers.)
 data/raw/*Post_Sharing*.csv
 __pycache__/
+# The repository root ignores every dist/ folder (for the other app); re-include ours.
+!dist/

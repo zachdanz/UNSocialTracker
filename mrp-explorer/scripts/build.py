@@ -477,6 +477,10 @@ def build_html(built, posts, unmatched):
     check_no_whatsapp(html)
     os.makedirs(DIST, exist_ok=True)
     open(os.path.join(DIST, 'mrp-explorer.html'), 'w', encoding='utf-8').write(html)
+    # GitHub Pages serves the repository's docs/ folder: keep docs/index.html in sync when that folder exists.
+    pages = os.path.join(os.path.dirname(ROOT), 'docs')
+    if os.path.isdir(pages):
+        open(os.path.join(pages, 'index.html'), 'w', encoding='utf-8').write(html)
 
 
 def check_no_whatsapp(html):

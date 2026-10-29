@@ -105,6 +105,11 @@ with its candidates, posts not in the compendium, and parsing problems.
 The build **refuses to write the explorer** if any WhatsApp number from the sheet would appear in it. Personal
 data (stars, notes, rankings) lives only in each user's browser and can never be in the dist file.
 
+### Online version (GitHub Pages)
+The build also writes `../docs/index.html` (the repository's `docs/` folder), which GitHub Pages publishes at
+https://zachdanz.github.io/UNSocialTracker/ once Pages is set to serve the `/docs` folder of this branch. After a
+rebuild, commit and push `docs/index.html` to update the online version. It is public: anyone with the link can see it.
+
 ### Add a missing JO (e.g. 215456)
 1. Copy the full JO text from Inspira.
 2. Paste it at the end of `data/raw/YPP_Mobility_Job_Opening.txt`, separated from the previous JO by a line
