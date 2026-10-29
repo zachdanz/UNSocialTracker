@@ -1,0 +1,5 @@
+# This repository is PUBLIC. The data contains colleagues' names, emails and (in the raw sheet)
+# WhatsApp numbers, plus internal JO texts. Keep all of it out of git; share dist/ directly.
+data/
+dist/
+__pycache__/
