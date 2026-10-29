@@ -95,7 +95,7 @@ def read_entries(path):
             team_composition=tidy(col(r, 'TEAM COMPOSITION')),
             duty_station_assessment=tidy(col(r, 'DUTY STATION ASSESSMENT')),
             comments=tidy(col(r, 'COMMENTS')),
-        )  # NB: the Whatsapp column is deliberately never read.
+        )  # NB: the Whatsapp column is deliberately not copied (see check_no_whatsapp).
         e['mjo_numbers'] = re.findall(r'(?<!\d)\d{6}(?!\d)', e['mjo_text'] or '')
         entries.append(e)
     return entries
@@ -193,6 +193,7 @@ def match_entry(e, comp, jos, manual):
     """Return (list of candidate dicts {mjo, level, reasons}, general notes for the entry)."""
     cm = {c['mjo_number']: c for c in comp}
     notes = []
+    dropped = {}  # mjo -> post it was dropped in favour of (summarised into one note at the end)
     caps = (e['participation'] or '').lower()
     not_participating = 'not participating' in caps or 'deferral' in caps
     if not_participating:
@@ -258,8 +259,7 @@ def match_entry(e, comp, jos, manual):
                     words = [t for t in dist if m in present[t]]
                     if scores[m] < best:
                         cands.pop(m)
-                        notes.append(f'Dropped {m}: the unit ("{e["unit"]}") matches the JO of '
-                                     f'{", ".join(top)} better.')
+                        dropped[m] = ', '.join(top)
                     elif m in top:
                         cands[m].append(f'Unit words found where this JO\'s org setting says where the post sits: {", ".join(words)}.')
                 if len(top) == 1:
@@ -267,7 +267,7 @@ def match_entry(e, comp, jos, manual):
                     # One JO clearly matches: posts with no JO text yet are no longer plausible either.
                     for m in [m for m in cands if m not in jos]:
                         cands.pop(m)
-                        notes.append(f'Dropped {m} (no JO text yet): the unit clearly matches the JO of {top[0]}.')
+                        dropped[m] = top[0]
         elif len(with_jo) == 1:
             m = with_jo[0]
             toks = unit_tokens(e['unit'])
@@ -297,10 +297,18 @@ def match_entry(e, comp, jos, manual):
                 words = [t for t in dist if m in present[t]]
                 jt = jos[m]['title_full']
                 for mm in cands:  # the title-based candidates are now contradicted by the unit
-                    notes.append(f'Dropped {mm}: the unit ("{e["unit"]}") matches the JO of {m} better.')
+                    dropped[mm] = m
                 cands = {m: [f'Title differs (entry: "{e["title"]}", JO: "{jt}"), but unit words found where '
                              f'this JO\'s org setting says where the post sits: {", ".join(words)}.']}
 
+    for winner in dict.fromkeys(dropped.values()):
+        lost = [m for m, w in dropped.items() if w == winner]
+        notes.append(f'Also considered and ruled out: {", ".join(lost)} (the unit "{e["unit"]}" fits the JO of '
+                     f'{winner} better).')
+    for m, reasons in cands.items():
+        c = cm[m]
+        if norm_entity(e['entity']) != norm_entity(c['entity']) and agree(m):
+            reasons.append(f'Entity given as {e["entity"]}; the compendium lists this post under {c["entity"]}.')
     out = []
     for m, reasons in cands.items():
         level = 'likely' if (m in likely and not not_participating) else 'possible'
@@ -466,8 +474,26 @@ def build_html(built, posts, unmatched):
     # Escape '<' so text in the data can never close the <script> tag.
     blob = json.dumps(payload, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
     html = open(TEMPLATE, encoding='utf-8').read().replace('/*__DATA__*/null', blob)
+    check_no_whatsapp(html)
     os.makedirs(DIST, exist_ok=True)
     open(os.path.join(DIST, 'mrp-explorer.html'), 'w', encoding='utf-8').write(html)
+
+
+def check_no_whatsapp(html):
+    """Safety net: stop the build if any WhatsApp number from the sheet appears in the output.
+    (The column is only read here, to check its values are absent.)"""
+    path = find_csv()
+    if not path:
+        return
+    numbers = set()
+    for r in csv.DictReader(open(path, encoding='cp1252', newline='')):
+        digits = re.sub(r'\D', '', col(r, 'Whatsapp') or '')
+        if len(digits) >= 7:
+            numbers.add(digits)
+    found = {re.sub(r'\D', '', m) for m in re.findall(r'\+?\d[\d \-().]{5,}\d', html)}
+    leaks = [n for n in numbers if any(n in f or (len(f) >= 7 and f in n) for f in found)]
+    if leaks:
+        sys.exit(f'PRIVACY CHECK FAILED: {len(leaks)} WhatsApp number(s) would appear in the explorer. Not written.')
 
 
 if __name__ == '__main__':
