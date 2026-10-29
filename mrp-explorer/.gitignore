@@ -1,5 +1,4 @@
-# This repository is PUBLIC. The data contains colleagues' names, emails and (in the raw sheet)
-# WhatsApp numbers, plus internal JO texts. Keep all of it out of git; share dist/ directly.
-data/
-dist/
+# The raw post-sharing sheet contains colleagues' WhatsApp numbers: never commit it.
+# (Everything the explorer needs from it is in data/posts.json and dist/, without WhatsApp numbers.)
+data/raw/*Post_Sharing*.csv
 __pycache__/

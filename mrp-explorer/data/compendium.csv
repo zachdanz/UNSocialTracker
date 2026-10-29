@@ -1,0 +1,109 @@
+mjo_number,duty_station,entity,level,title_compendium,job_network,job_family
+215366,Addis Ababa,ECA,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215393,Addis Ababa,ECA,P2,Associate Statistician,DEVNET,Data Analytics and Management
+215364,Addis Ababa,ECA,P2,Associate Finance Officer,MAGNET,Finance
+215365,Addis Ababa,ECA,P2,Associate Human Resources Officer,MAGNET,Human Resources
+215418,Addis Ababa,ECA,P2,Associate Human Resources Officer,MAGNET,Human Resources
+215392,Addis Ababa,ECA,P2,Associate Gender Affairs Officer,POLNET,Economic Affairs
+215374,Addis Ababa,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215404,Bangkok,ESCAP,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215424,Bangkok,ESCAP,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215436,Bangkok,ESCAP,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215471,Bangkok,ESCAP,P2,Associate Information Officer,INFONET,Public Information
+215457,Bangkok,ESCAP,P2,Associate Human Resources Officer,MAGNET,Human Resources
+215367,Beirut,ESCWA,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215391,Beirut,ESCWA,P2,Associate Programme Management Officer,DEVNET,Economic Affairs
+215423,Beirut,ESCWA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215428,Beirut,ESCWA,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215437,Beirut,ESCWA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215461,Beirut,ESCWA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215429,Beirut,ESCWA,P2,Associate Information Systems Officer,ITECNET,Information Management Systems
+215446,Beirut,ESCWA,P2,Associate Human Resources Officer,MAGNET,Human Resources
+215469,Beirut,ESCWA,P2,Associate Finance Officer,MAGNET,Data Analytics and Management
+215372,Beirut,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215376,Dakar,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215417,Geneva,DGACM,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215403,Geneva,DGC,P2,Associate Press Officer,INFONET,Public Information
+215411,Geneva,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215445,Geneva,ECE,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215447,Geneva,ECE,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215462,Geneva,ECE,P2,Associate Statistician,DEVNET,Statistics
+215465,Geneva,IIIM-SYRIA,P2,Associate Legal Officer (Trial Attorney),LEGALNET,Jurists
+215369,Geneva,IIMP,P2,Associate Investigator,MAGNET,Investigation
+215470,Geneva,IIMP,P2,Associate Human Rights Officer,POLNET,Data Analytics and Management
+215474,Geneva,IIMP,P2,"Ciate Information Analyst, Political Affairs",POLNET,Human Rights Affairs
+215387,Geneva,ODA,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215431,Geneva,OHCHR,P2,Associate Information Systems Officer,ITECNET,Information Management Systems
+215377,Geneva,OHCHR,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215370,Geneva,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215373,Geneva,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215464,Geneva,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215416,Geneva,OIOS,P2,Associate Auditor,MAGNET,Audit
+215381,Geneva,UNCTAD,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215385,Geneva,UNCTAD,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215386,Geneva,UNCTAD,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215405,Geneva,UNCTAD,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215427,Geneva,UNCTAD,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215433,Geneva,UNCTAD,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215439,Geneva,UNOG,P2,Associate Accountant,MAGNET,Finance
+215425,Mexico City,ECLAC,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215382,Nairobi,UN-Habitat,P2,Associate Programme Management Officer,DEVNET,Human Settlements
+215383,Nairobi,UN-Habitat,P2,Associate Programme Management Officer,DEVNET,Human Settlements
+215384,Nairobi,UN-Habitat,P2,Associate Programme Management Officer,DEVNET,Human Settlements
+215363,Nairobi,UNON,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215399,Nairobi,UNON,P2,Associate Human Resources Office,MAGNET,Human Resources
+215413,Nairobi,UNON,P2,Associate Finance Officer,MAGNET,Finance
+215355,New York,DESA,P2,Associate Statistician,DEVNET,Statistics
+215356,New York,DESA,P2,Associate Economic Affairs Offic,DEVNET,Economic Affairs
+215357,New York,DESA,P2,Associate Sustainable Developmen,DEVNET,Sustainable Development
+215414,New York,DESA,P2,Associate Programme Officer,DEVNET,Environmental Affairs
+215420,New York,DESA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215434,New York,DESA,P2,Associate Statistician,DEVNET,Statistics
+215435,New York,DESA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215459,New York,DESA,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215358,New York,DGC,P2,Associate Public Information Officer,INFONET,Public Information
+215395,New York,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215406,New York,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215407,New York,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215408,New York,DGC,P2,Associate Press Officer,INFONET,Public Information
+215409,New York,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215449,New York,DGC,P2,Associate Radio Producer,INFONET,Public Information
+215456,New York,DGC,P2,Associate Public Information Officer,INFONET,Public Information
+215360,New York,DMSPC,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215362,New York,DMSPC,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215443,New York,DMSPC,P2,Associate Management And Program Officer,MAGNET,Management and Analysis
+215448,New York,DMSPC,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215460,New York,DMSPC,P2,Associate Programme Management Officer,MAGNET,Administration
+215432,New York,DOS,P2,Associate Information Systems Officer,ITECNET,Administration
+215450,New York,DOS,P2,Associate Procurement Officer,LOGNET,Procurement
+215438,New York,DOS,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215452,New York,DOS,P2,Associate Finance Officer,MAGNET,Finance
+215453,New York,DOS,P2,Associate Finance And Budget Officer,MAGNET,Finance
+215400,New York,DPPA,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215422,New York,DPPA,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215441,New York,DPPA,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215463,New York,DPPA,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215359,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215361,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215401,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215442,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215458,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215479,New York,DPPA-DPO-SS,P2,Associate Political Affairs Officer,POLNET,Political Affairs
+215454,New York,DSS,P2,Associate Data Specialist,INFONET,Data Analytics and Management
+215440,New York,DSS,P2,Associate Information Management Officer,ITECNET,Information Management Systems
+215419,New York,EOSG,P2,Associate Administrative Officer,MAGNET,Political Affairs
+215388,New York,OAJ,P2,Associate Legal Officer,LEGALNET,Legal Affairs
+215379,New York,OHRLLS,P2,Associate Programme Management Officer,DEVNET,Programme Management
+215412,New York,OIOS,P2,Associate Management And Program Officer,MAGNET,Management and Analysis
+215415,New York,OIOS,P2,Associate Management And Program Officer,MAGNET,Management and Analysis
+215444,New York,OIOS,P2,Associate Management And Program Officer,MAGNET,Management and Analysis
+215380,New York,OSAA,P2,Associate Administrative Officer,MAGNET,Administration
+215426,Niamey,ECA,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215455,Port of Spain,ECLAC,P2,Associate Social Affairs Officer,DEVNET,Social Affairs
+215378,Pretoria,OHCHR,P2,Associate Human Rights Officer,POLNET,Human Rights Affairs
+215398,Santiago,ECLAC,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215421,Santiago,ECLAC,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215468,Santiago,ECLAC,P2,Associate Economic Affairs Officer,DEVNET,Economic Affairs
+215430,Santiago,ECLAC,P2,Associate Public Information Officer,INFONET,Information Management Systems
+215396,Santiago,ECLAC,P2,Associate Information Systems Officer,ITECNET,Information Management Systems
+215402,Santiago,ECLAC,P2,Associate Staff Development Officer,MAGNET,Human Resources

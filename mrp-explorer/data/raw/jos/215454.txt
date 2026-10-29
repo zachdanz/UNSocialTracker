@@ -1,0 +1,66 @@
+YPP Mobility Job Opening
+Static Image
+Job Code Title
+Associate Data Specialist
+Level
+P2
+Department of Safety and Security
+Department
+NEW YORK
+Duty Station Code
+YPP Exercise
+29/10/2026 - 08/11/2026
+Mobility Job Opening
+215454
+Global Dynamic Adaptable Workforce
+Mobility Job Openings are intended only for positions  reserved for the managed reassignment exercises of the Young Professionals Programme.
+Org. Setting and Reporting
+The United Nations Department of Safety and Security (UNDSS) is responsible for providing leadership, operational support and oversight of the United Nations security management system (UNSMS) globally. As a global leader in security risk management principles, UNDSS enables the safe and effective delivery of United Nations programmes and activities in the most complex and challenging environments, while maximizing precious resources. To this end, the work of the Department is aligned under a clear mission, to enable United Nations system programme activities through trusted security leadership and solutions.
+
+The Department has embarked on a series of reforms to reconceptualize security as an enabler of UN programmes within acceptable risk. New strategic initiatives focus on improving the quality of evidence-based planning and foresight scenarios required to strengthen UNDSS response in the field and ensure continued programmatic delivery and support to UN organizations in complex emergencies and deteriorating security situations.
+
+This position is located in the Operational Resilience Service (ORS) within the Office of the Under-Secretary-General for Safety and Security, UNDSS. ORS provides specialist support to UNDSS’s field operations enhancing the department’s ability to absorb and recover from shocks, stresses, and challenges while maintaining essential functions during any occurrence. ORS pursues a proactive and data-led approach to develop and implement innovative ideas, methodologies, and solutions to an ever-evolving global security landscape. 
+
+This is a unique opportunity to join a diverse, dynamic, and exciting organization gaining unique and valuable experience where security provides great value. Besides gaining new skills and experience, this position offers a fulfilling and stimulating environment in a newly established section that fosters organizational change through data, digital innovation, foresight, and behavioral science in line with the UN Secretary General’s vision for a “UN 2.0”. 
+
+The Associate Data Analyst will report to the Programme Officer for Strategic Innovation under the supervision of the Senior Programme Officer within ORS. In this role, you will help UNDSS’s field operations become more effective, efficient, and adaptable, thus contributing directly or indirectly to peace and security, human rights, and the achievement of the Sustainable Development Goals (SDG).
+
+Responsibilities
+Within delegated authority, the Associate Data Analyst will be responsible for the following duties
+
+Acquire, clean and prepare data for analysis from internal and external sources, operational reports, risk assessments, security databases surveys, social media feeds, and inputs from field activities
+Identify, analyze, and interpret trends or patterns, in structured and unstructured sources of data using quantitative and qualitative research and analysis methods.
+Support in recognizing potential problems with data sources and develop process improvement solutions prioritizing accuracy, timeliness, and relevance for analytics tasks.
+Implement databases, data collection systems, digital tools, and data analytics platforms to enhance decision-making processes in field operations, strategic planning, and real-time response capabilities.
+Contribute to the development of country categorization systems aggregating relevant indicators and metrics that accurately reflect field operational readiness, resource allocation, and crisis risk perceptions in alignment with key partners in global decision-making fora.
+Develop innovative reporting and visualization outputs including interactive dashboards, maps or infographics to effectively communicate findings and transform complex data into actionable insights for senior management.
+Competencies
+Professionalism: Excellent analytical skills with the ability to collect, organize, manage, and disseminate significant amounts of information with attention to detail and accuracy. The ability to analyze, model and interpret data in support of decision-making and convey information succinctly to management. Adept at queries, report writing and presenting findings. Takes pride in the work for the organization and understands the impact that can be brought into the organization by allowing data-driven and evidence-based decisions. Ability to apply judgment in the context of assignments given, plan own work and manage conflicting priorities.  Shows pride in work and in achievements; demonstrates professional competence and mastery of subject matter; is conscientious and efficient in meeting commitments, observing deadlines and achieving results; is motivated by professional rather than personal concerns; shows persistence when faced with difficult problems or challenges; remains calm in stressful situations. Takes responsibility for incorporating gender perspectives and ensuring the equal participation of women and men in all areas of work
+Creativity: Actively seeks to improve programmes or services; offers new and different options to solve problems or meet client needs; promotes and persuades others to consider new ideas; takes calculated risks on new and unusual ideas; thinks “outside the box”; takes an interest in new ideas and new ways of doing things; is not bound by current thinking or traditional approaches. 
+Technological Awareness: Keeps abreast of available technology; understands applicability and limitation of technology to the work of the office; actively seeks to apply technology to appropriate tasks; shows willingness to learn new technology.
+Eligibility & Suitability Req
+ 
+
+Education: A first level university degree is required, preferably in computer science, data science, business analytics, statistics, information management, public administration, management, economics, social sciences or a related field. 
+
+Experience: Experience in applied analytics, business intelligence, information management, statistics, project management, stakeholder management or related area is desirable. 
+
+Experience with self-service analytics, data visualization or business intelligence tools (Excel, Power Query, Power BI, Tableau, Qlik, SAP, STATA, SPSS or similar) is desirable.
+
+Experience with database or programming languages (SQL, Python, R) is desirable. 
+
+Experience with O365 Sharepoint and cloud technologies in the context of data analytics or information management is desirable. 
+
+
+Language: English and French are the working languages of the UN Secretariat. For this position, fluency in English (both oral and written) is required. Knowledge of another UN language an advantage.
+
+ 
+
+
+Career Development
+YPP Conditions
+Languages
+English and French are the working languages of the United Nations Secretariat. For this post, English is required. The table below shows the minimum required level for each skill in these languages, according to the UN Language Framework (please consult https://languages.un.org for details).
+Required Languages
+Language	Reading	Writing	Listening	Speaking
+English	UN Level II	UN Level II	UN Level II	UN Level II

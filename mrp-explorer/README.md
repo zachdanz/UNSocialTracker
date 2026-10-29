@@ -90,8 +90,9 @@ mrp-explorer/
   data/posts.json, data/build_report.md, data/validation_report.md   build outputs
   dist/mrp-explorer.html      the file to share
 ```
-`data/` and `dist/` are **gitignored**: this repository is public, and the data contains colleagues' names,
-emails and (in the raw sheet) WhatsApp numbers. Share `dist/mrp-explorer.html` directly, not through GitHub.
+Only the raw post-sharing CSV is **gitignored**, because it contains colleagues' WhatsApp numbers. Everything
+else, including `dist/mrp-explorer.html` and `data/posts.json` (which contain names and emails from the sheet),
+is committed. To rebuild from a fresh clone, put the downloaded sheet back in `data/raw/`.
 
 ### Build
 ```bash

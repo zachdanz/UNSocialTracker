@@ -1,0 +1,7 @@
+{
+  "_help": "Override automatic matching. Keys are entry_ids from data/build_report.md. 'matches': entry_id -> MJO number or list of MJO numbers (shown as 'Matched manually'). 'no_match': entry_ids that match no compendium post.",
+  "matches": {
+    "zach-danz": "215456"
+  },
+  "no_match": []
+}

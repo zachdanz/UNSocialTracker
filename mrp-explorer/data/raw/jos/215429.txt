@@ -1,0 +1,78 @@
+YPP Mobility Job Opening
+Static Image
+Job Code Title
+ASSOCIATE INFORMATION SYSTEMS OFFICER
+Level
+P2
+Economic and Social Commission for Western Asia
+Department
+BEIRUT
+Duty Station Code
+YPP Exercise
+29/10/2026 - 08/11/2026
+Mobility Job Opening
+215429
+Global Dynamic Adaptable Workforce
+Mobility Job Openings are intended only for positions  reserved for the managed reassignment exercises of the Young Professionals Programme.
+Org. Setting and Reporting
+The Economic and Social Commission for Western Asia (ESCWA) forms part of the United Nations Secretariat and, like the other regional commissions, operates under the supervision of the United Nations Economic and Social Council. ESCWA comprises 21 Arab countries in Western Asia and North Africa. ESCWA provides a framework for the formulation and harmonisation of sectoral policies for member countries, a platform for congress and coordination, a home for expertise and knowledge, and an information observatory. ESCWA activities are coordinated with the divisions and main offices of the Headquarters of the United Nations, specialised agencies, and international and regional organizations, including the League of Arab States and its subsidiary bodies, and the Gulf Cooperation Council.
+
+This position is located in the Data Science and Decision-Support Division. The Data Science and Decision-Support Division (DSDSD) is part of ESCWA’s broader modernization and innovation efforts, providing advanced analytics and decision-support services within ESCWA, other UN entities, and Member States. Aligned with the UN 2.0 agenda and grounded in strategic foresight, DSDS leverages data-driven insights, emerging technologies, and scenario-based planning to anticipate trends and proactively inform policymaking and operations. Its core functions include data integration and management; data quality assurance; advanced analytics and modeling; machine learning and artificial intelligence solutions; real-time dashboards and performance reporting; and data visualization and business intelligence and the design and development of specialized digital decision-support tools. Through these capabilities, DSDS empowers evidence-based decision-making, fosters organizational efficiency, and catalyzes strategic innovation across the region, supporting sustainable development outcomes regionally and globally.
+
+The Associate Information Systems Officer will report to the Chief of DSDS.
+ 
+
+Responsibilities
+Within delegated authority, the Associate Information Systems Officer will be responsible for the following duties: 
+
+ 
+
+Participates in preparing user requirements and other technical specifications. 
+Assists in the design, development and installation of information systems, including cloud-based applications, APIs, workflow automation and AI-enabled solutions, using modern software development practices.
+ Undertakes analysis of well-defined modules within the system, develop enhancements and new features to existing systems; may design and implement small, stand-alone systems as needed (e.g. to meet individual user requirements).
+Undertakes rigorous testing and proving of applications software, including automated and regression testing, and evaluates AI-enabled solutions for accuracy, reliability, performance, bias and security.
+Maintains assigned portions of systems, providing operational support for system’s applications, analyzing and implementing system changes/upgrades, etc.
+Participates in developing and maintaining Information Systems project plans, schedules, and budgets, applying Agile methodologies, iterative development and DevOps practices, as appropriate. Assists in identifying appropriate human and technical resources, monitoring project progress and risks, addressing deviations, escalating issues, preparing status reports and ensuring quality assurance of project deliverables.
+Writes and develops programs to interface with existing systems.
+Ensures data security and integrity, applying cybersecurity, privacy-by-design and data governance principles, including appropriate safeguards for AI-enabled systems, sensitive information and responsible AI use.
+Participates in developing disaster recovery plans.
+Prepares, updates and maintains system’s documentation and related technical/procedural manuals.
+Assists in procurements, including conducting needs assessments and benchmarks, preparing technical specifications and evaluation criteria.
+Assists in the set-up and monitoring of software performance measures.
+Drafts training materials and conducts training sessions and demonstrations of systems for users.
+Participates with senior staff in assessing, prototyping and testing emerging technologies, including generative AI, large language models (LLMs), retrieval-augmented generation (RAG), prompt engineering, intelligent automation and AI-assisted development tools, evaluating their suitability, risks and potential organizational benefits.
+Performs ad hoc duties as required.
+May provide guidance to new/junior staff. 
+Contributes to the collection, preparation, analysis and visualization of data; identifies trends and patterns and develops draft insights through interactive dashboards, charts, tables and reports, leveraging modern analytics platforms and, where appropriate, AI-assisted analytical tools to support evidence-based planning, decision-making and reporting.
+Competencies
+•    Professionalism:  Knowledge of at least two programming languages, basic systems analysis and design techniques, testing, debugging, and documentation standards, database design, storage and internal systems. Shows pride in work and in achievements; demonstrates professional competence and mastery of subject matter; is conscientious and efficient in meeting commitments, observing deadlines and achieving results; is motivated by professional rather than personal concerns; shows persistence when faced with difficult problems or challenges; remains calm in stressful situations. Takes responsibility for incorporating gender perspectives and ensuring the equal participation of women and men in all areas of work. Able to analyze and interpret data in support of decision-making and convey resulting information to management.
+•    Communication:  Speaks and writes clearly and effectively; listens to others, correctly interprets messages from others and responds appropriately; asks questions to clarify, and exhibits interest in having two-way communication; tailors language, tone, style and format to match audience; demonstrates openness in sharing information and keeping people informed.
+•    Planning & Organizing:  Develops clear goals that are consistent with agreed strategies; identifies priority activities and assignments; adjusts priorities as required; allocates appropriate amount of time and resources for completing work; foresees risks and allows for contingencies when planning; monitors and adjusts plans and actions as necessary; uses time efficiently.
+
+Eligibility & Suitability Req
+Education: 
+
+A first-level university degree is required; preferably in computer science, information systems, artificial intelligence, cybersecurity, data science, or related field is desirable.
+
+Experience:
+
+•    Experience in the planning, design, development, implementation and maintenance of computer information systems or related area is desirable. 
+•    Experience in developing and maintaining cloud-based applications and services is desirable.
+•    Experience with modern software development practices, including Agile methodologies, DevOps and CI/CD pipelines, is desirable.
+•    Experience in developing or integrating AI-enabled applications, including generative AI and large language models (LLMs), is desirable.
+•    Experience with retrieval-augmented generation (RAG), prompt engineering and AI-assisted development tools is desirable.
+•    Experience in business process automation, workflow optimization and systems integration using APIs is desirable.
+•    Experience in data analytics, data visualization and modern data management platforms is desirable.
+•    Experience in applying cybersecurity, data privacy and responsible AI principles to information systems is desirable.
+
+Language: 
+
+English and French are the two working languages of the United Nations. For this post, fluency in English is required. 
+
+Career Development
+YPP Conditions
+Languages
+English and French are the working languages of the United Nations Secretariat. For this post, English is required. The table below shows the minimum required level for each skill in these languages, according to the UN Language Framework (please consult https://languages.un.org for details).
+Required Languages
+Language	Reading	Writing	Listening	Speaking
+English	UN Level II	UN Level II	UN Level II	UN Level II
